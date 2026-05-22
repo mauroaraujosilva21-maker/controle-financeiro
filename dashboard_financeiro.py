@@ -68,14 +68,20 @@ with aba_resumo:
     saldo_atual = RENDA_TOTAL - total_saidas
     
     # Cards Grandes com Cores Claras para Leitura Fácil
+    # Cards Grandes e Nativos do Streamlit (Seguros e fáceis de ler)
     c1, c2, c3 = st.columns(3)
-    c1.markdown(f"<div style='background-color: #E8F5E9; padding: 20px; border-radius: 10px; border-left: 8px solid #2E7D32;'><p style='margin:0; font-size:14px; color:#1B5E20;'><b>Nossa Renda Somada</b></p><h2 style='margin:0; color:#1B5E20;'>R$ {RENDA_TOTAL:,.2f}</h2><span style='font-size:11px; color:#555;'>Mauro: R$ 2.100 | Esposa: ~R$ 1.000</span></div>", unsafe_allowed_html=True)
-    c2.markdown(f"<div style='background-color: #FFEBEE; padding: 20px; border-radius: 10px; border-left: 8px solid #C62828;'><p style='margin:0; font-size:14px; color:#B71C1C;'><b>Total de Gastos (Fixos + Cartões)</b></p><h2 style='margin:0; color:#B71C1C;'>R$ {total_saidas:,.2f}</h2><span style='font-size:11px; color:#555;'>Fixo Essencial: R$ 1.578,00</span></div>", unsafe_allowed_html=True)
     
-    if saldo_atual >= 0:
-        c3.markdown(f"<div style='background-color: #E3F2FD; padding: 20px; border-radius: 10px; border-left: 8px solid #1565C0;'><p style='margin:0; font-size:14px; color:#0D47A1;'><b>Livre para Investir / Sobra</b></p><h2 style='margin:0; color:#0D47A1;'>R$ {saldo_atual:,.2f}</h2><span style='font-size:11px; color:#555;'>Dinheiro sob controle!</span></div>", unsafe_allowed_html=True)
-    else:
-        c3.markdown(f"<div style='background-color: #FFF3E0; padding: 20px; border-radius: 10px; border-left: 8px solid #EF6C00;'><p style='margin:0; font-size:14px; color:#E65100;'><b>Orçamento Estourado</b></p><h2 style='margin:0; color:#E65100;'>R$ {saldo_atual:,.2f}</h2><span style='font-size:11px; color:#555;'>Atenção aos gastos extras!</span></div>", unsafe_allowed_html=True)
+    with c1:
+        st.metric(label="💵 Nossa Renda Somada", value=f"R$ {RENDA_TOTAL:,.2f}", help="Mauro: R$ 2.100 | Esposa: R$ 1.000")
+        
+    with c2:
+        st.metric(label="📉 Total de Gastos", value=f"R$ {total_saidas:,.2f}", delta="- Fixo Essencial: R$ 1.578,00", delta_color="inverse")
+        
+    with c3:
+        if saldo_atual >= 0:
+            st.metric(label="💰 Sobra / Livre para Investir", value=f"R$ {saldo_atual:,.2f}", delta="Dinheiro sob controle!")
+        else:
+            st.metric(label="⚠️ Orçamento Estourado", value=f"R$ {saldo_atual:,.2f}", delta="Atenção aos gastos!", delta_color="inverse")
 
     st.markdown("### 💳 Seus Cartões e Alertas Importantes")
     col_cartao1, col_cartao2 = st.columns(2)
