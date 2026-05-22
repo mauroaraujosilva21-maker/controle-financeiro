@@ -18,7 +18,7 @@ st.markdown("---")
 # Substitua pelo link que você copiou no Passo 3
 LINK_DA_PLANILHA = "https://docs.google.com/spreadsheets/d/11fafX78intIlKGUT-hyzli7keGs2Diw3cUkRJ5IyYDc/edit?usp=sharing"
 
-pdef carregar_dados_sheets(url):
+def carregar_dados_sheets(url):
     try:
         # Força o Google Sheets a entregar os dados como um CSV puro e limpo
         if "/edit" in url:
