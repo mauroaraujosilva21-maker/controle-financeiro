@@ -10,8 +10,8 @@ import numpy as np
 st.set_page_config(page_title="Nosso Painel Financeiro ❤️", layout="wide")
 
 # Título acolhedor para facilitar o uso da esposa
-st.markdown("<h1 style='text-align: center; color: #2E7D32;'>💰 Nosso Controle Financeiro Familiar</h1>", unsafe_allowed_html=True)
-st.markdown("<p style='text-align: center; font-size: 18px;'>Feito com carinho para o Mauro e sua Esposa organizarem o futuro juntos.</p>", unsafe_allowed_html=True)
+st.title("💰 Nosso Controle Financeiro Familiar")
+
 st.markdown("---")
 
 # CONEXÃO DIRETA COM O GOOGLE SHEETS
