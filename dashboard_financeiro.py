@@ -18,15 +18,28 @@ st.markdown("---")
 # Substitua pelo link que você copiou no Passo 3
 LINK_DA_PLANILHA = "https://docs.google.com/spreadsheets/d/11fafX78intIlKGUT-hyzli7keGs2Diw3cUkRJ5IyYDc/edit?usp=sharing"
 
-def carregar_dados_sheets(url):
+pdef carregar_dados_sheets(url):
     try:
-        csv_url = url.replace("/edit?usp=sharing", "/export?format=csv")
+        # Força o Google Sheets a entregar os dados como um CSV puro e limpo
+        if "/edit" in url:
+            base_url = url.split("/edit")[0]
+            csv_url = f"{base_url}/export?format=csv"
+        else:
+            csv_url = url
+            
         df = pd.read_csv(csv_url)
+        
+        # Garante que os nomes das colunas não tenham espaços invisíveis
+        df.columns = df.columns.str.strip()
+        
+        # Ajusta os formatos de data e número para o Python entender
         df["Data"] = pd.to_datetime(df["Data"], errors='coerce')
         df["Valor"] = pd.to_numeric(df["Valor"], errors='coerce')
+        
         return df.dropna(subset=["Tipo", "Valor"])
-    except:
-        # Fallback caso a planilha ainda não esteja conectada ou esteja vazia
+    except Exception as e:
+        # Se der qualquer erro, o painel avisa na tela o que aconteceu
+        st.sidebar.error(f"Erro ao ler a planilha: {e}")
         return pd.DataFrame(columns=["Data", "Tipo", "Responsavel", "Categoria", "Valor", "Descricao"])
 
 df_historico = carregar_dados_sheets(LINK_DA_PLANILHA)
